@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Star } from "lucide-react";
+import { ArrowRight, Play, Star, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import heroIllustration from "@/assets/hero-illustration.jpg";
 import DemoSlideshow from "./DemoSlideshow";
+import { URLS } from "@/config/urls";
 
 const HeroSection = () => {
   const [isDemoOpen, setIsDemoOpen] = useState(false);
@@ -46,9 +47,9 @@ const HeroSection = () => {
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button variant="hero" size="xl" className="group" asChild>
-                  <a href="#contacto">
-                    Solicitar Demo Gratuita
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <a href={URLS.getDemoUrl()} target="_blank" rel="noopener noreferrer">
+                    Probar Demo Interactivo
+                    <ExternalLink className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </a>
                 </Button>
                 <Button 
@@ -59,6 +60,12 @@ const HeroSection = () => {
                 >
                   <Play className="mr-2 h-5 w-5" />
                   Ver Demo (2 min)
+                </Button>
+                <Button variant="outline" size="xl" className="group" asChild>
+                  <a href="#contacto">
+                    Solicitar Demo Personalizada
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </a>
                 </Button>
               </div>
 
