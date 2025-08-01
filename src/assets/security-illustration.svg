@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <!-- Fondo -->
+  <rect width="500" height="400" fill="#f8f9fa"/>
+  
+  <!-- Escudo principal -->
+  <path d="M250 80 L200 100 L200 200 Q200 250 250 280 Q300 250 300 200 L300 100 Z" fill="#28a745" stroke="#1e7e34" stroke-width="3"/>
+  
+  <!-- Candado en el escudo -->
+  <rect x="230" y="160" width="40" height="30" rx="5" fill="white"/>
+  <rect x="235" y="150" width="30" height="20" rx="15" fill="none" stroke="white" stroke-width="4"/>
+  <circle cx="250" cy="175" r="3" fill="#28a745"/>
+  
+  <!-- Elementos de seguridad -->
+  <circle cx="150" cy="150" r="25" fill="#0d6efd" opacity="0.8"/>
+  <text x="150" y="157" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="white">SSL</text>
+  
+  <circle cx="350" cy="150" r="25" fill="#ffc107" opacity="0.8"/>
+  <text x="350" y="157" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">2FA</text>
+  
+  <circle cx="120" cy="250" r="25" fill="#dc3545" opacity="0.8"/>
+  <text x="120" y="257" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">AES</text>
+  
+  <circle cx="380" cy="250" r="25" fill="#6f42c1" opacity="0.8"/>
+  <text x="380" y="257" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">GDPR</text>
+  
+  <!-- Texto principal -->
+  <text x="250" y="330" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#212529">Máxima Seguridad</text>
+  <text x="250" y="355" font-family="Arial" font-size="16" text-anchor="middle" fill="#6c757d">Protección de datos y transacciones</text>
+  
+  <!-- Líneas de conexión -->
+  <line x1="175" y1="150" x2="225" y2="180" stroke="#e9ecef" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="325" y1="150" x2="275" y2="180" stroke="#e9ecef" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="145" y1="250" x2="225" y2="220" stroke="#e9ecef" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="355" y1="250" x2="275" y2="220" stroke="#e9ecef" stroke-width="2" stroke-dasharray="5,5"/>
+</svg>
