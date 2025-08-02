@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle, Mail, MessageCircle, Building, Users } from "lucide-react";
+import { insertDemoRequest } from "@/config/supabase";
 
 const DemoForm = () => {
   const [formData, setFormData] = useState({
@@ -24,23 +25,52 @@ const DemoForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulación de envío
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // Validar campos requeridos
+      if (!formData.nombre || !formData.email || !formData.telefono) {
+        toast({
+          title: "Error de validación",
+          description: "Por favor completa todos los campos requeridos.",
+          variant: "destructive"
+        });
+        return;
+      }
 
-    toast({
-      title: "¡Solicitud enviada exitosamente!",
-      description: "Nos pondremos en contacto contigo en las próximas 24 horas.",
-    });
+      // Enviar datos a Supabase
+      await insertDemoRequest({
+        nombre: formData.nombre,
+        email: formData.email,
+        telefono: formData.telefono,
+        tipo_rifa: formData.tipoRifa,
+        frecuencia: formData.frecuencia,
+        comentarios: formData.comentarios
+      });
 
-    setIsSubmitting(false);
-    setFormData({
-      nombre: "",
-      email: "",
-      telefono: "",
-      tipoRifa: "",
-      frecuencia: "",
-      comentarios: ""
-    });
+      toast({
+        title: "¡Solicitud enviada exitosamente!",
+        description: "Nos pondremos en contacto contigo en las próximas 24 horas.",
+      });
+
+      // Limpiar formulario
+      setFormData({
+        nombre: "",
+        email: "",
+        telefono: "",
+        tipoRifa: "",
+        frecuencia: "",
+        comentarios: ""
+      });
+
+    } catch (error) {
+      console.error('Error al enviar solicitud:', error);
+      toast({
+        title: "Error al enviar solicitud",
+        description: "Hubo un problema al procesar tu solicitud. Por favor intenta nuevamente.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (name: string, value: string) => {
