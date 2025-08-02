@@ -37,6 +37,15 @@ const DemoForm = () => {
         return;
       }
 
+      console.log('Enviando datos a Supabase:', {
+        nombre: formData.nombre,
+        email: formData.email,
+        telefono: formData.telefono,
+        tipo_rifa: formData.tipoRifa,
+        frecuencia: formData.frecuencia,
+        comentarios: formData.comentarios
+      });
+
       // Enviar datos a Supabase (las credenciales se generan automáticamente)
       const result = await insertDemoRequest({
         nombre: formData.nombre,
@@ -47,11 +56,16 @@ const DemoForm = () => {
         comentarios: formData.comentarios
       });
 
+      console.log('Resultado de insertDemoRequest:', result);
+
       // Obtener las credenciales generadas
       if (result && result[0]?.id) {
+        console.log('Obteniendo credenciales para ID:', result[0].id);
         const credentials = await getDemoCredentials(result[0].id);
+        console.log('Credenciales obtenidas:', credentials);
         
         // Enviar email con credenciales
+        console.log('Enviando email con credenciales...');
         const emailSent = await sendDemoCredentials({
           nombre: credentials.nombre,
           email: credentials.email,
@@ -59,11 +73,15 @@ const DemoForm = () => {
           password: credentials.password,
           expires_at: credentials.expires_at
         });
+        console.log('Email enviado:', emailSent);
         
         // Marcar email como enviado si fue exitoso
         if (emailSent) {
           await markEmailSent(result[0].id);
+          console.log('Email marcado como enviado');
         }
+      } else {
+        console.error('No se pudo obtener el ID del resultado:', result);
       }
 
       toast({
