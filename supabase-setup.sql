@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS demo_requests (
 );
 
 -- 2. Crear índices para mejorar el rendimiento
-CRETE INDEX IF NOT EXISTS idx_demo_requests_email ON demo_requests(email);
+CREATE INDEX IF NOT EXISTS idx_demo_requests_email ON demo_requests(email);
 CREATE INDEX IF NOT EXISTS idx_demo_requests_created_at ON demo_requests(created_at DESC);
 
 -- 3. Habilitar Row Level Security (RLS)

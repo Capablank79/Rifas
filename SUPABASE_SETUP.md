@@ -18,26 +18,29 @@ Esta guía te ayudará a configurar Supabase para capturar las solicitudes de de
    - **Project URL** (VITE_SUPABASE_URL)
    - **anon public key** (VITE_SUPABASE_ANON_KEY)
 
-### 2. Configurar Variables de Entorno
+### 2. Configurar Variables de Entorno ✅ COMPLETADO
 
-1. Copia el archivo `.env.example` a `.env`:
-   ```bash
-   cp .env.example .env
-   ```
+Las credenciales ya están configuradas en el archivo `.env`:
+```env
+VITE_SUPABASE_URL=https://fdqmyjuzgqvklhdesgik.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkcW15anV6Z3F2a2xoZGVzZ2lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMTQ4MzIsImV4cCI6MjA2OTY5MDgzMn0.kJMvEuoO-0BSdYRAi1Yc00erlCqnoj9Kd2R3z9VWUaM
+```
 
-2. Edita el archivo `.env` y reemplaza los valores:
-   ```env
-   VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
-   VITE_SUPABASE_ANON_KEY=tu_clave_publica_anonima
-   ```
+### 3. Crear la Tabla en Supabase 🔄 PENDIENTE
 
-### 3. Crear la Tabla en Supabase
+**IMPORTANTE**: Debes ejecutar este paso manualmente en Supabase:
 
-1. Ve a tu proyecto en Supabase
+1. Ve a tu proyecto en Supabase: https://fdqmyjuzgqvklhdesgik.supabase.co
 2. Navega a **SQL Editor**
 3. Crea una nueva query
-4. Copia y pega el contenido del archivo `supabase-setup.sql`
+4. Copia y pega el contenido del archivo `supabase-setup.sql` (ya corregido)
 5. Ejecuta la query
+
+**Script SQL listo para ejecutar:**
+```sql
+-- El script completo está en supabase-setup.sql
+-- Crea la tabla demo_requests con todas las políticas de seguridad
+```
 
 ### 4. Verificar la Configuración
 
