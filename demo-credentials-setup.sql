@@ -63,6 +63,31 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- 5b. Función para validar solo username (para sesiones guardadas)
+CREATE OR REPLACE FUNCTION validate_demo_user(p_username TEXT)
+RETURNS TABLE(
+  id UUID,
+  username TEXT,
+  email TEXT,
+  nombre TEXT,
+  expires_at TIMESTAMP WITH TIME ZONE
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT 
+    dr.id,
+    dr.username,
+    dr.email,
+    dr.nombre,
+    dr.expires_at
+  FROM demo_requests dr
+  WHERE dr.username = p_username 
+    AND dr.expires_at > NOW() 
+    AND dr.status = 'active'
+  LIMIT 1;
+END;
+$$ LANGUAGE plpgsql;
+
 -- 6. Función para marcar credenciales como expiradas (tarea de limpieza)
 CREATE OR REPLACE FUNCTION expire_old_demo_credentials()
 RETURNS INTEGER AS $$
