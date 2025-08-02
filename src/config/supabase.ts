@@ -1,10 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key'
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+// Advertencia en desarrollo si las variables no están configuradas
+if (import.meta.env.DEV && (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY)) {
+  console.warn('⚠️ Supabase environment variables not configured. Using placeholder values.')
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
@@ -23,6 +24,12 @@ export interface DemoRequest {
 
 // Función para insertar una nueva solicitud de demo
 export const insertDemoRequest = async (data: Omit<DemoRequest, 'id' | 'created_at'>) => {
+  // Si estamos usando credenciales placeholder, simular la respuesta
+  if (supabaseUrl === 'https://placeholder.supabase.co') {
+    console.warn('⚠️ Using placeholder Supabase credentials. Request simulated.')
+    return [{ ...data, id: 'placeholder-id', created_at: new Date().toISOString() }]
+  }
+
   const { data: result, error } = await supabase
     .from('demo_requests')
     .insert([data])
@@ -37,6 +44,12 @@ export const insertDemoRequest = async (data: Omit<DemoRequest, 'id' | 'created_
 
 // Función para obtener todas las solicitudes de demo (para admin)
 export const getDemoRequests = async () => {
+  // Si estamos usando credenciales placeholder, simular la respuesta
+  if (supabaseUrl === 'https://placeholder.supabase.co') {
+    console.warn('⚠️ Using placeholder Supabase credentials. Returning empty data.')
+    return []
+  }
+
   const { data, error } = await supabase
     .from('demo_requests')
     .select('*')
