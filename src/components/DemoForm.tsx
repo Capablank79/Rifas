@@ -7,7 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle, Mail, MessageCircle, Building, Users } from "lucide-react";
-import { insertDemoRequest } from "@/config/supabase";
+import { insertDemoRequest, getDemoCredentials, markEmailSent } from "@/config/supabase";
+import { sendDemoCredentials } from "@/services/emailService";
 
 const DemoForm = () => {
   const [formData, setFormData] = useState({
@@ -36,8 +37,8 @@ const DemoForm = () => {
         return;
       }
 
-      // Enviar datos a Supabase
-      await insertDemoRequest({
+      // Enviar datos a Supabase (las credenciales se generan automáticamente)
+      const result = await insertDemoRequest({
         nombre: formData.nombre,
         email: formData.email,
         telefono: formData.telefono,
@@ -46,9 +47,28 @@ const DemoForm = () => {
         comentarios: formData.comentarios
       });
 
+      // Obtener las credenciales generadas
+      if (result && result[0]?.id) {
+        const credentials = await getDemoCredentials(result[0].id);
+        
+        // Enviar email con credenciales
+        const emailSent = await sendDemoCredentials({
+          nombre: credentials.nombre,
+          email: credentials.email,
+          username: credentials.username,
+          password: credentials.password,
+          expires_at: credentials.expires_at
+        });
+        
+        // Marcar email como enviado si fue exitoso
+        if (emailSent) {
+          await markEmailSent(result[0].id);
+        }
+      }
+
       toast({
         title: "¡Solicitud enviada exitosamente!",
-        description: "Nos pondremos en contacto contigo en las próximas 24 horas.",
+        description: "Revisa tu email para recibir las credenciales de acceso a la demo.",
       });
 
       // Limpiar formulario
@@ -85,27 +105,28 @@ const DemoForm = () => {
           <div className="space-y-8">
             <div>
               <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
-                Solicita tu Demo
+                Acceso a Demo Interactiva
               </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-poppins mb-6">
-                Descubre el poder de{" "}
+                Prueba{" "}
                 <span className="bg-gradient-primary bg-clip-text text-transparent">
                   EasyRif
                 </span>
+                {" "}gratis por 24 horas
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Agenda una demostración personalizada y descubre cómo EasyRif puede transformar 
-                la gestión de tus rifas en un proceso profesional y eficiente.
+                Solicita acceso a nuestra demo interactiva y recibe credenciales temporales 
+                para explorar todas las funcionalidades de EasyRif durante 24 horas.
               </p>
             </div>
 
             {/* Benefits */}
             <div className="space-y-4">
               {[
-                "Demo personalizada de 30 minutos",
-                "Análisis de tus necesidades específicas",
-                "Configuración gratuita para tu primer evento",
-                "Soporte dedicado durante la implementación"
+                "Acceso completo por 24 horas",
+                "Credenciales enviadas por email",
+                "Explora todas las funcionalidades",
+                "Únete a la waitlist desde la demo"
               ].map((benefit, index) => (
                 <div key={index} className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-success" />
@@ -136,9 +157,9 @@ const DemoForm = () => {
           {/* Form */}
           <Card className="shadow-elegant border-border/50">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-poppins">Solicitar Demo Gratuita</CardTitle>
+              <CardTitle className="text-2xl font-poppins">Solicitar Acceso a Demo</CardTitle>
               <p className="text-muted-foreground">
-                Completa el formulario y nos pondremos en contacto contigo
+                Completa el formulario y recibe tus credenciales por email
               </p>
             </CardHeader>
             <CardContent>
@@ -231,12 +252,12 @@ const DemoForm = () => {
                   className="w-full"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Enviando..." : "Solicitar Demo Gratuita"}
+                  {isSubmitting ? "Enviando..." : "Solicitar Acceso a Demo"}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  Al enviar este formulario, aceptas que nos pongamos en contacto contigo 
-                  para programar tu demo personalizada.
+                  Al enviar este formulario, recibirás credenciales temporales válidas por 24 horas 
+                  para acceder a nuestra demo interactiva.
                 </p>
               </form>
             </CardContent>
