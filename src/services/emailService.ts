@@ -105,7 +105,7 @@ const createEmailTemplate = (credentials: EmailCredentials): string => {
 // Función para enviar email usando Resend API
 const sendEmailWithResend = async (credentials: EmailCredentials): Promise<boolean> => {
   const resendApiKey = import.meta.env.VITE_RESEND_API_KEY
-  const fromEmail = import.meta.env.VITE_FROM_EMAIL || 'noreply@easyref.com'
+  const fromEmail = import.meta.env.VITE_FROM_EMAIL || 'onboarding@resend.dev'
   const fromName = import.meta.env.VITE_FROM_NAME || 'EasyRif Demo'
   
   if (!resendApiKey) {
