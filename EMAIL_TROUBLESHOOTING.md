@@ -3,7 +3,7 @@
 ## ✅ PROBLEMA RESUELTO - 03/08/2025
 
 ### 🎯 Solución Aplicada:
-- **Nueva API Key de Resend configurada:** `re_Crcpwrdh_G4XseJS2sRC938N6hixaxEKm`
+- **Nueva API Key de Resend configurada:** `re_xxxxxxxxxxxxxxxxxxxxxxxxxx` (configurada en variables de entorno)
 - **Email de origen correcto:** `onboarding@resend.dev`
 - **Prueba exitosa:** Email ID `24d1cde0-8263-4777-936e-151a25dc1831`
 
@@ -16,7 +16,7 @@
 
 ### 🔧 Configuración Final en `.env`:
 ```env
-VITE_RESEND_API_KEY=re_Crcpwrdh_G4XseJS2sRC938N6hixaxEKm
+VITE_RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxx
 VITE_FROM_EMAIL=onboarding@resend.dev
 VITE_FROM_NAME=EasyRif Demo
 ```
