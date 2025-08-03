@@ -102,38 +102,78 @@ const createEmailTemplate = (credentials: EmailCredentials): string => {
   `
 }
 
+// Función para enviar email usando Resend API
+const sendEmailWithResend = async (credentials: EmailCredentials): Promise<boolean> => {
+  const resendApiKey = import.meta.env.VITE_RESEND_API_KEY
+  const fromEmail = import.meta.env.VITE_FROM_EMAIL || 'noreply@easyref.com'
+  const fromName = import.meta.env.VITE_FROM_NAME || 'EasyRif Demo'
+  
+  if (!resendApiKey) {
+    console.warn('⚠️ VITE_RESEND_API_KEY no configurada')
+    return false
+  }
+  
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: `${fromName} <${fromEmail}>`,
+        to: [credentials.email],
+        subject: '🎉 Credenciales de Acceso - EasyRif Demo',
+        html: createEmailTemplate(credentials)
+      })
+    })
+    
+    if (response.ok) {
+      const result = await response.json()
+      console.log('✅ Email enviado exitosamente:', result.id)
+      return true
+    } else {
+      const error = await response.text()
+      console.error('❌ Error enviando email:', error)
+      return false
+    }
+  } catch (error) {
+    console.error('❌ Error en la petición de email:', error)
+    return false
+  }
+}
+
 // Función principal para enviar credenciales
 export const sendDemoCredentials = async (credentials: EmailCredentials): Promise<boolean> => {
   try {
-    // En desarrollo, simular el envío
+    // En desarrollo, mostrar información y enviar email real si está configurado
     if (import.meta.env.DEV) {
-      console.log('📧 SIMULANDO ENVÍO DE EMAIL:')
+      console.log('📧 ENVIANDO EMAIL DE CREDENCIALES:')
       console.log('Para:', credentials.email)
       console.log('Nombre:', credentials.nombre)
       console.log('Usuario:', credentials.username)
       console.log('Contraseña:', credentials.password)
       console.log('Expira:', formatExpirationDate(credentials.expires_at))
-      console.log('\n📧 Template HTML:')
-      console.log(createEmailTemplate(credentials))
-      
-      // Simular delay de envío
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      return true
     }
     
-    // TODO: Aquí integrar servicio real de email
-    // Opciones recomendadas:
-    // 1. EmailJS (frontend): https://www.emailjs.com/
-    // 2. Resend (API): https://resend.com/
-    // 3. SendGrid (API): https://sendgrid.com/
-    // 4. Netlify Functions + Nodemailer
-    // 5. Vercel Edge Functions + Resend
+    // Intentar envío real con Resend
+    const emailSent = await sendEmailWithResend(credentials)
     
-    console.warn('⚠️ Servicio de email no configurado en producción')
-    return false
+    if (emailSent) {
+      console.log('✅ Email de credenciales enviado exitosamente')
+      return true
+    } else {
+      console.warn('⚠️ No se pudo enviar el email. Verificar configuración de Resend.')
+      // En desarrollo, simular éxito para testing
+      if (import.meta.env.DEV) {
+        console.log('🔧 Modo desarrollo: simulando envío exitoso')
+        return true
+      }
+      return false
+    }
     
   } catch (error) {
-    console.error('Error enviando email:', error)
+    console.error('❌ Error enviando email:', error)
     return false
   }
 }
