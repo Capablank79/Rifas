@@ -146,34 +146,30 @@ const sendEmailWithResend = async (credentials: EmailCredentials): Promise<boole
 // Función principal para enviar credenciales
 export const sendDemoCredentials = async (credentials: EmailCredentials): Promise<boolean> => {
   try {
-    // En desarrollo, mostrar información y enviar email real si está configurado
-    if (import.meta.env.DEV) {
-      console.log('📧 ENVIANDO EMAIL DE CREDENCIALES:')
-      console.log('Para:', credentials.email)
-      console.log('Nombre:', credentials.nombre)
-      console.log('Usuario:', credentials.username)
-      console.log('Contraseña:', credentials.password)
-      console.log('Expira:', formatExpirationDate(credentials.expires_at))
-    }
+    console.log('📧 ENVIANDO EMAIL DE CREDENCIALES:')
+    console.log('Para:', credentials.email)
+    console.log('Nombre:', credentials.nombre)
+    console.log('Usuario:', credentials.username)
+    console.log('Contraseña:', credentials.password)
+    console.log('Expira:', formatExpirationDate(credentials.expires_at))
     
     // Intentar envío real con Resend
-    const emailSent = await sendEmailWithResend(credentials)
-    
-    if (emailSent) {
-      console.log('✅ Email de credenciales enviado exitosamente')
-      return true
-    } else {
-      console.warn('⚠️ No se pudo enviar el email. Verificar configuración de Resend.')
-      // En desarrollo, simular éxito para testing
-      if (import.meta.env.DEV) {
-        console.log('🔧 Modo desarrollo: simulando envío exitoso')
+    try {
+      const emailId = await sendEmailWithResend(credentials)
+      if (emailId) {
+        console.log('✅ Email enviado exitosamente:', emailId)
         return true
+      } else {
+        console.log('❌ No se pudo enviar el email: API Key no configurada')
+        return false
       }
+    } catch (error) {
+      console.error('❌ Error en envío real:', error)
       return false
     }
     
   } catch (error) {
-    console.error('❌ Error enviando email:', error)
+    console.error('Error enviando email:', error)
     return false
   }
 }
