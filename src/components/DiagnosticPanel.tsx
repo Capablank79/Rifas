@@ -72,46 +72,46 @@ const DiagnosticPanel: React.FC = () => {
   };
 
   const testEmailAPI = async () => {
-    setEmailTestResult('Probando...');
+    setEmailTestResult('🔄 Probando API route de email...');
     
-    const apiKey = import.meta.env.VITE_RESEND_API_KEY;
-    const fromEmail = import.meta.env.VITE_FROM_EMAIL;
-    
-    if (!apiKey) {
-      setEmailTestResult('❌ No se puede probar: VITE_RESEND_API_KEY no configurada');
-      return;
-    }
+    const fromEmail = import.meta.env.VITE_FROM_EMAIL || 'onboarding@resend.dev';
+    const fromName = import.meta.env.VITE_FROM_NAME || 'EasyRif Demo';
     
     try {
-      const response = await fetch('https://api.resend.com/emails', {
+      // Probar nuestra API route en lugar de llamar directamente a Resend
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          from: fromEmail || 'test@example.com',
           to: 'test@example.com',
           subject: 'Test de diagnóstico desde ' + (import.meta.env.PROD ? 'PRODUCCIÓN' : 'DESARROLLO'),
-          html: `<p>Este es un test de diagnóstico ejecutado el ${new Date().toISOString()}</p>`
+          html: `<p>Este es un test de diagnóstico ejecutado el ${new Date().toISOString()}</p><p>Entorno: ${import.meta.env.PROD ? 'PRODUCCIÓN' : 'DESARROLLO'}</p>`,
+          from: `${fromName} <${fromEmail}>`
         })
       });
       
-      console.log('Status de respuesta:', response.status);
+      console.log('Status de respuesta API route:', response.status);
       
       if (response.ok) {
         const data = await response.json();
-        setEmailTestResult(`✅ API de Resend responde correctamente. ID: ${data.id}`);
-        console.log('✅ API de Resend responde correctamente', data);
+        setEmailTestResult(`✅ API route funciona correctamente. Email ID: ${data.emailId}`);
+        console.log('✅ API route funciona correctamente', data);
       } else {
-        const errorData = await response.text();
-        setEmailTestResult(`❌ Error en API de Resend (${response.status}): ${errorData}`);
-        console.error('❌ Error en API de Resend:', errorData);
+        const errorData = await response.json();
+        setEmailTestResult(`❌ Error en API route (${response.status}): ${errorData.error}`);
+        console.error('❌ Error en API route:', errorData);
+        
+        // Mostrar detalles adicionales si están disponibles
+        if (errorData.details) {
+          console.error('❌ Detalles del error:', errorData.details);
+        }
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-      setEmailTestResult(`❌ Error al conectar con Resend: ${errorMessage}`);
-      console.error('❌ Error al conectar con Resend:', error);
+      setEmailTestResult(`❌ Error al conectar con API route: ${errorMessage}`);
+      console.error('❌ Error al conectar con API route:', error);
     }
   };
 

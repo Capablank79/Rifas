@@ -1,9 +1,57 @@
-# 🔍 Diagnóstico de Problemas de Email en Producción
+# 🔧 Diagnóstico de Problemas de Email en Producción (Vercel)
 
-## Problema Identificado
-Los correos electrónicos funcionan correctamente en desarrollo local pero fallan en producción en Vercel.
+Este documento te ayudará a diagnosticar y solucionar problemas con el envío de correos electrónicos en producción usando Vercel y Resend.
 
-## Causas Más Comunes
+## 🚨 Problema Común
+
+Los correos electrónicos se envían correctamente en desarrollo local, pero fallan en producción (Vercel) con errores como:
+- "API Key no configurada"
+- Variables de entorno `undefined`
+- Errores de CORS al llamar directamente a `https://api.resend.com/emails`
+- Errores de conexión con Resend
+
+## ✅ Solución Implementada
+
+**IMPORTANTE**: Se ha implementado una solución usando **API Routes de Vercel** para evitar problemas de CORS y manejo de variables de entorno:
+
+- **Archivo**: `/api/send-email.js` - Función serverless que maneja el envío de emails
+- **Frontend**: Modificado para usar `/api/send-email` en lugar de llamadas directas a Resend
+- **Variables**: Ahora usa variables sin prefijo `VITE_` en el servidor
+
+## Problema Identificado (Método Anterior)
+Los correos electrónicos funcionan correctamente en desarrollo local pero fallan en producción en Vercel cuando se usa el método directo de llamadas a la API de Resend.
+
+## 🔧 Configuración Requerida en Vercel
+
+### 1. Variables de Entorno del Servidor (NUEVAS - Requeridas)
+
+En el dashboard de Vercel, configura estas variables **SIN** el prefijo `VITE_`:
+
+```
+RESEND_API_KEY=re_tu_clave_real_de_resend
+FROM_EMAIL=tu-email@dominio-verificado.com
+FROM_NAME=EasyRif Demo
+```
+
+### 2. Variables de Entorno del Frontend (Opcionales - Compatibilidad)
+
+Puedes mantener estas para compatibilidad, pero ya no son necesarias:
+
+```
+VITE_RESEND_API_KEY=re_tu_clave_real_de_resend
+VITE_FROM_EMAIL=tu-email@dominio-verificado.com
+VITE_FROM_NAME=EasyRif Demo
+```
+
+### 3. Pasos en Vercel Dashboard
+
+1. Ve a tu proyecto en Vercel
+2. Settings → Environment Variables
+3. Agrega las variables del servidor (sin VITE_)
+4. Asegúrate de seleccionar todos los entornos (Production, Preview, Development)
+5. Haz un redeploy completo
+
+## Causas Más Comunes (Método Anterior)
 
 ### 1. Variables de Entorno No Configuradas en Vercel
 <mcreference link="https://stackoverflow.com/questions/75559927/vite-env-variable-returns-undefined-in-production-with-vercel" index="3">3</mcreference> <mcreference link="https://vite.dev/guide/env-and-mode" index="2">2</mcreference>

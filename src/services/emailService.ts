@@ -102,43 +102,44 @@ const createEmailTemplate = (credentials: EmailCredentials): string => {
   `
 }
 
-// Función para enviar email usando Resend API
+// Función para enviar email usando nuestra API route (evita problemas de CORS)
 const sendEmailWithResend = async (credentials: EmailCredentials): Promise<boolean> => {
-  const resendApiKey = import.meta.env.VITE_RESEND_API_KEY
   const fromEmail = import.meta.env.VITE_FROM_EMAIL || 'onboarding@resend.dev'
   const fromName = import.meta.env.VITE_FROM_NAME || 'EasyRif Demo'
   
-  if (!resendApiKey) {
-    console.warn('⚠️ VITE_RESEND_API_KEY no configurada')
-    return false
-  }
-  
   try {
-    const response = await fetch('https://api.resend.com/emails', {
+    // Usar nuestra API route en lugar de llamar directamente a Resend
+    const response = await fetch('/api/send-email', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${resendApiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: `${fromName} <${fromEmail}>`,
-        to: [credentials.email],
+        to: credentials.email,
         subject: '🎉 Credenciales de Acceso - EasyRif Demo',
-        html: createEmailTemplate(credentials)
+        html: createEmailTemplate(credentials),
+        from: `${fromName} <${fromEmail}>`
       })
     })
     
     if (response.ok) {
       const result = await response.json()
-      console.log('✅ Email enviado exitosamente:', result.id)
+      console.log('✅ Email enviado exitosamente:', result.emailId)
       return true
     } else {
-      const error = await response.text()
+      const error = await response.json()
       console.error('❌ Error enviando email:', error)
+      
+      // Mostrar mensaje específico según el tipo de error
+      if (error.details && error.details.message) {
+        console.error('❌ Detalle del error:', error.details.message)
+      }
+      
       return false
     }
   } catch (error) {
     console.error('❌ Error en la petición de email:', error)
+    console.error('❌ No se pudo enviar el email: Error de conexión')
     return false
   }
 }
