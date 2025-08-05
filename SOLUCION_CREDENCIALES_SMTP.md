@@ -18,7 +18,7 @@ El diagnóstico ha confirmado que **las credenciales SMTP funcionan correctament
 Accede al Dashboard de Vercel y actualiza la variable:
 
 ```
-SMTP_PASS=r1f4s2025.@
+SMTP_PASS=your_password_here
 ```
 
 **Pasos detallados:**
@@ -49,7 +49,7 @@ Una vez redeployado:
 SMTP_HOST=mail.exesoft.cl
 SMTP_PORT=465
 SMTP_USER=easyrdemo@exesoft.cl
-SMTP_PASS=r1f4s2025.@
+SMTP_PASS=your_password_here
 FROM_EMAIL=easyrdemo@exesoft.cl
 FROM_NAME=EasyRif Demo
 ```

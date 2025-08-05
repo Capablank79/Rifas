@@ -37,7 +37,7 @@ El problema tiene **2 causas posibles**:
    SMTP_HOST=mail.exesoft.cl
    SMTP_PORT=465
    SMTP_USER=easyrdemo@exesoft.cl
-   SMTP_PASS=r1f4s2025.@
+   SMTP_PASS=your_password_here
    FROM_EMAIL=easyrdemo@exesoft.cl
    FROM_NAME=EasyRif Demo
    ```
@@ -62,7 +62,7 @@ El problema tiene **2 causas posibles**:
 SMTP_HOST=mail.exesoft.cl
 SMTP_PORT=465
 SMTP_USER=easyrdemo@exesoft.cl
-SMTP_PASS=r1f4s2025.@
+SMTP_PASS=your_password_here
 FROM_EMAIL=easyrdemo@exesoft.cl
 FROM_NAME=EasyRif Demo
 ```

@@ -19,12 +19,12 @@
 SMTP_HOST=mail.exesoft.cl
 SMTP_PORT=465
 SMTP_USER=easyrdemo@exesoft.cl
-SMTP_PASS=r1f4s2025.@
+SMTP_PASS=your_password_here
 FROM_EMAIL=easyrdemo@exesoft.cl
 FROM_NAME=EasyRif Demo
 ```
 
-**⚠️ IMPORTANTE**: Si `SMTP_PASS` no tiene el valor `r1f4s2025.@`, actualízalo.
+**⚠️ IMPORTANTE**: Configura `SMTP_PASS` con la contraseña correcta del email.
 
 ### 2️⃣ Revisar Logs de Vercel
 
@@ -73,7 +73,7 @@ curl -X POST https://TU-PROYECTO.vercel.app/api/send-email \
 
 **Solución**:
 1. Ve a Vercel → Settings → Environment Variables
-2. Edita `SMTP_PASS` y cambia a: `r1f4s2025.@`
+2. Edita `SMTP_PASS` y configura la contraseña correcta
 3. Guarda y redeploya
 
 ### Error: "ECONNREFUSED" o "timeout"
@@ -129,7 +129,7 @@ vercel logs --follow
 - [ ] `SMTP_HOST` = `mail.exesoft.cl`
 - [ ] `SMTP_PORT` = `465`
 - [ ] `SMTP_USER` = `easyrdemo@exesoft.cl`
-- [ ] `SMTP_PASS` = `r1f4s2025.@`
+- [ ] `SMTP_PASS` = `[contraseña_configurada]`
 - [ ] `FROM_EMAIL` = `easyrdemo@exesoft.cl`
 - [ ] `FROM_NAME` = `EasyRif Demo`
 

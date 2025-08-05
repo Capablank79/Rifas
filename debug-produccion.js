@@ -145,7 +145,7 @@ function showCommonSolutions() {
   console.log('='.repeat(50));
   
   console.log('\n🔐 Si el error es de autenticación:');
-  console.log('   1. Verifica SMTP_PASS en Vercel = r1f4s2025.@');
+  console.log('   1. Verifica SMTP_PASS en Vercel (usar contraseña correcta)');
   console.log('   2. Confirma SMTP_USER = easyrdemo@exesoft.cl');
   console.log('   3. Redeploya después de cambiar variables');
   
