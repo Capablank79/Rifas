@@ -104,8 +104,8 @@ const createEmailTemplate = (credentials: EmailCredentials): string => {
 
 // Función para enviar email usando nuestra API route (evita problemas de CORS)
 const sendEmailWithResend = async (credentials: EmailCredentials): Promise<boolean> => {
-  const fromEmail = import.meta.env.VITE_FROM_EMAIL || 'onboarding@resend.dev'
-  const fromName = import.meta.env.VITE_FROM_NAME || 'EasyRif Demo'
+  // No usar variables VITE_ aquí - el servidor usará sus propias variables FROM_EMAIL y FROM_NAME
+  // Las variables del frontend no deben interferir con la configuración del servidor
   
   try {
     // Usar nuestra API route - detectar si estamos en desarrollo o producción
@@ -121,8 +121,8 @@ const sendEmailWithResend = async (credentials: EmailCredentials): Promise<boole
       body: JSON.stringify({
         to: credentials.email,
         subject: '🎉 Credenciales de Acceso - EasyRif Demo',
-        html: createEmailTemplate(credentials),
-        from: `${fromName} <${fromEmail}>`
+        html: createEmailTemplate(credentials)
+        // No enviar 'from' - el servidor usará FROM_EMAIL y FROM_NAME de sus variables de entorno
       })
     })
     
