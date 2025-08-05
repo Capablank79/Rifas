@@ -151,7 +151,7 @@ export const sendDemoCredentials = async (credentials: EmailCredentials): Promis
     console.log('Para:', credentials.email)
     console.log('Nombre:', credentials.nombre)
     console.log('Usuario:', credentials.username)
-    console.log('Contraseña:', credentials.password)
+    console.log('Contraseña: [OCULTA POR SEGURIDAD]')
     console.log('Expira:', formatExpirationDate(credentials.expires_at))
     
     // Intentar envío real con Resend

@@ -68,7 +68,7 @@ const DemoRequestModal = ({ isOpen, onClose }: DemoRequestModalProps) => {
       if (result && result[0]?.id) {
         console.log('Obteniendo credenciales para ID:', result[0].id);
         const credentials = await getDemoCredentials(result[0].id);
-        console.log('Credenciales obtenidas:', credentials);
+        console.log('Credenciales obtenidas para usuario:', credentials?.username || 'N/A');
         
         // Enviar email con credenciales
         console.log('Enviando email con credenciales...');
@@ -83,8 +83,15 @@ const DemoRequestModal = ({ isOpen, onClose }: DemoRequestModalProps) => {
         
         // Marcar email como enviado si fue exitoso
         if (emailSent) {
-          await markEmailSent(result[0].id);
-          console.log('Email marcado como enviado');
+          try {
+            await markEmailSent(result[0].id);
+            console.log('✅ Email marcado como enviado en base de datos');
+          } catch (error) {
+            console.error('❌ Error al marcar email como enviado:', error);
+            // No fallar el proceso completo por este error
+          }
+        } else {
+          console.warn('⚠️ Email no se pudo enviar, no se marcará como enviado');
         }
       } else {
         console.error('No se pudo obtener el ID del resultado:', result);

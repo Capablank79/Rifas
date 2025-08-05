@@ -101,7 +101,7 @@ const testSendDemoCredentials = async (credentials) => {
     console.log('Para:', credentials.email)
     console.log('Nombre:', credentials.nombre)
     console.log('Usuario:', credentials.username)
-    console.log('Contraseña:', credentials.password)
+    console.log('Contraseña: [OCULTA POR SEGURIDAD]')
     console.log('Expira:', formatExpirationDate(credentials.expires_at))
     
     console.log('\n📝 TEMPLATE DEL EMAIL:')

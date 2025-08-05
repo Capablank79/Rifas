@@ -124,7 +124,7 @@ const processDemoRequest = async (requestData) => {
     const credentials = generateDemoCredentials(requestData)
     console.log('✅ Credenciales generadas:')
     console.log('   Usuario:', credentials.username)
-    console.log('   Contraseña:', credentials.password)
+    console.log('   Contraseña: [OCULTA POR SEGURIDAD]')
     console.log('   Expira en: 24 horas')
     
     // Paso 2: Guardar en base de datos
