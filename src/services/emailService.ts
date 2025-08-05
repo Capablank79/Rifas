@@ -108,8 +108,12 @@ const sendEmailWithResend = async (credentials: EmailCredentials): Promise<boole
   const fromName = import.meta.env.VITE_FROM_NAME || 'EasyRif Demo'
   
   try {
-    // Usar nuestra API route en lugar de llamar directamente a Resend
-    const response = await fetch('/api/send-email', {
+    // Usar nuestra API route - detectar si estamos en desarrollo o producción
+    const apiUrl = import.meta.env.DEV 
+      ? '/api/send-email' 
+      : 'https://rifas-bice.vercel.app/api/send-email'
+    
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
